@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOOT JACKAL, LOOT! - Leaderboard</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
+    <meta name="keywords" content="Loot Jackal, Loot, leaderboard, game, scores, ranking, top players, arcade game">
+    <meta name="author" content="FedeDC512">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="1 days">
+    <link rel="canonical" href="https://fededc512.github.io/leaderboard-web/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fededc512.github.io/leaderboard-web/">
+    <meta property="og:title" content="LOOT JACKAL, LOOT! - Leaderboard">
+    <meta property="og:description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
+    <meta property="og:image" content="https://fededc512.github.io/leaderboard-web/logo_v2.png">
+    <meta property="og:image:alt" content="LOOT JACKAL, LOOT! Logo">
+    <meta property="og:site_name" content="LOOT JACKAL, LOOT!">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://fededc512.github.io/leaderboard-web/">
+    <meta name="twitter:title" content="LOOT JACKAL, LOOT! - Leaderboard">
+    <meta name="twitter:description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
+    <meta name="twitter:image" content="https://fededc512.github.io/leaderboard-web/logo_v2.png">
+    <meta name="twitter:image:alt" content="LOOT JACKAL, LOOT! Logo">
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#1a1a35">
+    <meta name="msapplication-TileColor" content="#1a1a35">
+    <meta name="application-name" content="LOOT JACKAL, LOOT! Leaderboard">
+    <meta name="apple-mobile-web-app-title" content="LOOT JACKAL, LOOT! Leaderboard">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="logo_v2.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="container">
+        <header>
+            <img src="logo_v2.png" alt="Loot Jackal, Loot!" class="logo hidden">
+            <h1>Leaderboard</h1>
+            <p class="subtitle"><a href="https://frobby.itch.io/loot-jackal-loot" target="_blank">LOOT JACKAL, LOOT!</a></p>
+        </header>
+        
+        <main>
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading leaderboard...</p>
+            </div>
+            
+            <div id="error" class="error hidden">
+                <p id="error-message">Connection error</p>
+                <button id="reload-btn" onclick="location.reload()">Retry</button>
+            </div>
+            
+            <div id="leaderboard" class="leaderboard hidden">
+                <ol id="leaderboard-list">
+                    <!-- Entries will be inserted here -->
+                </ol>
+            </div>
+        </main>
+        
+        <div class="status-bar">
+            <div id="connection-status" class="connection-status connected">
+                <span class="status-dot"></span>
+                <span id="status-text">Live</span>
+            </div>
+            <p class="last-update">Last update: <span id="last-update-time">--:--:--</span></p>
+        </div>
+        
+        <footer>
+            <span>Leaderboard by <a href="https://github.com/FedeDC512" target="_blank">FedeDC512</a></span>
+            <span class="separator">•</span>
+            <span>Game available on <a href="https://frobby.itch.io/loot-jackal-loot" target="_blank">itch.io</a></span>
+        </footer>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- Config e App -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
