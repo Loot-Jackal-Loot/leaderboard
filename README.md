@@ -26,7 +26,7 @@ The main differences are intentional adaptations for the web context. While the 
 
 ## 📋 TODO
 
-- [ ] Replace site icon with a proper favicon
+- [x] Replace site icon with a proper favicon
 - [ ] Add a separate leaderboard section for the release version
 - [ ] Display time alongside score
 - [ ] Add the game logo
