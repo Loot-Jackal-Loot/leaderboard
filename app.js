@@ -1,11 +1,28 @@
 // DOM Elements
-let loadingEl, errorEl, errorMessageEl, leaderboardEl, leaderboardListEl, lastUpdateTimeEl;
+let loadingEl, errorEl, errorMessageEl, leaderboardEl, leaderboardListEl, lastUpdateTimeEl, lastUpdateLabelEl;
 let connectionStatusEl, statusTextEl;
+let versionButtons;
+
+// Countdown elements
+let countdownEl, countdownExpiredEl;
+let countdownDaysEl, countdownHoursEl, countdownMinutesEl, countdownSecondsEl;
+
+// Countdown target: 18/01/2026 at 20:00 Italian time (CET = UTC+1)
+const COUNTDOWN_TARGET = new Date('2026-01-18T19:00:00Z');
 
 // App state
 let leaderboardData = {};
+let leaderboardV1Data = null;
+let leaderboardV2Data = null;
+let currentVersion = 'current'; // 'current', 'v1', 'v2'
 let isInitialDataLoaded = false;
 let isConnected = false;
+
+// Static dates for archived leaderboards
+const LEADERBOARD_DATES = {
+    v1: { start: '2025-12-16', end: '2026-01-17' },
+    v2: { start: '2026-02-18', end: '2026-02-18' }
+};
 
 // Loading timeout (10 seconds)
 const LOADING_TIMEOUT = 10000;
@@ -27,8 +44,29 @@ async function init() {
     leaderboardEl = document.getElementById('leaderboard');
     leaderboardListEl = document.getElementById('leaderboard-list');
     lastUpdateTimeEl = document.getElementById('last-update-time');
+    lastUpdateLabelEl = document.getElementById('last-update-label');
     connectionStatusEl = document.getElementById('connection-status');
     statusTextEl = document.getElementById('status-text');
+    versionButtons = document.querySelectorAll('.version-btn');
+    
+    // Initialize countdown elements
+    countdownEl = document.getElementById('countdown');
+    countdownExpiredEl = document.getElementById('countdown-expired');
+    countdownDaysEl = document.getElementById('countdown-days');
+    countdownHoursEl = document.getElementById('countdown-hours');
+    countdownMinutesEl = document.getElementById('countdown-minutes');
+    countdownSecondsEl = document.getElementById('countdown-seconds');
+    
+    // Start countdown timer
+    initCountdown();
+    
+    // Setup version button listeners
+    versionButtons.forEach(btn => {
+        btn.addEventListener('click', () => switchVersion(btn.dataset.version));
+    });
+    
+    // Load static JSON data for v1 and v2
+    await loadStaticLeaderboards();
     
     // Set loading timeout
     loadingTimeoutId = setTimeout(onLoadingTimeout, LOADING_TIMEOUT);
@@ -74,6 +112,43 @@ async function init() {
         console.error('Login error:', error);
         showError('Connection error.\nPlease try again later.');
     }
+}
+
+async function loadStaticLeaderboards() {
+    try {
+        // Load V1 leaderboard
+        const v1Response = await fetch('leaderboard-v1-export.json');
+        const v1Data = await v1Response.json();
+        leaderboardV1Data = v1Data.Leaderboard || {};
+        
+        // Load V2 leaderboard
+        const v2Response = await fetch('leaderboard-v2-export.json');
+        const v2Data = await v2Response.json();
+        leaderboardV2Data = v2Data.Leaderboard || {};
+    } catch (error) {
+        console.error('Error loading static leaderboards:', error);
+    }
+}
+
+function switchVersion(version) {
+    currentVersion = version;
+    
+    // Update button states
+    versionButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.version === version);
+    });
+    
+    // Update connection status visibility
+    if (version === 'current') {
+        connectionStatusEl.style.display = 'flex';
+    } else {
+        connectionStatusEl.style.display = 'none';
+    }
+    
+    // Re-render leaderboard with appropriate data
+    updateLeaderboard();
+    showLeaderboard();
+    updateLastUpdateTime();
 }
 
 function onLoadingTimeout() {
@@ -150,11 +225,24 @@ function showLeaderboard() {
 }
 
 function updateLeaderboard() {
+    // Select data based on current version
+    let dataToDisplay;
+    switch (currentVersion) {
+        case 'v1':
+            dataToDisplay = leaderboardV1Data || {};
+            break;
+        case 'v2':
+            dataToDisplay = leaderboardV2Data || {};
+            break;
+        default:
+            dataToDisplay = leaderboardData;
+    }
+    
     // Convert data to array
     const entries = [];
     
-    for (const key in leaderboardData) {
-        const item = leaderboardData[key];
+    for (const key in dataToDisplay) {
+        const item = dataToDisplay[key];
         
         // Check if it's an object with score
         if (item && typeof item === 'object' && 'score' in item) {
@@ -216,13 +304,32 @@ function escapeHtml(text) {
 }
 
 function updateLastUpdateTime() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    lastUpdateTimeEl.textContent = timeString;
+    if (currentVersion === 'current') {
+        lastUpdateLabelEl.textContent = 'Last update';
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        lastUpdateTimeEl.textContent = timeString;
+    } else {
+        // Show date range for archived leaderboards
+        lastUpdateLabelEl.textContent = 'Active';
+        const dates = LEADERBOARD_DATES[currentVersion];
+        if (dates) {
+            const startDate = new Date(dates.start);
+            const endDate = new Date(dates.end);
+            const formatDate = (date) => date.toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            lastUpdateTimeEl.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+        } else {
+            lastUpdateTimeEl.textContent = '--';
+        }
+    }
 }
 
 function cleanup() {
@@ -252,6 +359,39 @@ function cleanup() {
     if (firebase.auth().currentUser) {
         firebase.auth().signOut();
     }
+}
+
+// Countdown Timer
+function initCountdown() {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+function updateCountdown() {
+    const now = new Date();
+    const diff = COUNTDOWN_TARGET - now;
+    
+    if (diff <= 0) {
+        if (countdownEl) countdownEl.classList.add('hidden');
+        if (countdownExpiredEl) countdownExpiredEl.classList.remove('hidden');
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    // Hide days container if days is 0
+    const daysContainer = document.getElementById('countdown-days-container');
+    if (daysContainer) {
+        daysContainer.style.display = days === 0 ? 'none' : 'flex';
+    }
+    
+    if (countdownDaysEl) countdownDaysEl.textContent = String(days).padStart(2, '0');
+    if (countdownHoursEl) countdownHoursEl.textContent = String(hours).padStart(2, '0');
+    if (countdownMinutesEl) countdownMinutesEl.textContent = String(minutes).padStart(2, '0');
+    if (countdownSecondsEl) countdownSecondsEl.textContent = String(seconds).padStart(2, '0');
 }
 
 // Start the app when DOM is ready

@@ -98,6 +98,64 @@ header h1 {
     text-transform: uppercase;
 }
 
+/* Countdown Timer */
+.countdown-container {
+    text-align: center;
+    padding: 12px;
+    margin-bottom: 13px;
+    background: linear-gradient(135deg, rgba(26, 26, 53, 0.9), rgba(20, 20, 40, 0.9));
+    border-radius: 13px;
+    border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 17px rgba(255, 215, 0, 0.3);
+}
+
+.countdown-label {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 55px;
+}
+
+.countdown-item span:first-child {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    line-height: 1;
+}
+
+.countdown-unit {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+.countdown-expired {
+    font-size: 1.35rem;
+    color: var(--accent-gold);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
 .subtitle a {
     color: inherit;
     text-decoration: none;
@@ -119,6 +177,41 @@ footer a:hover {
 
 footer .separator {
     padding: 0 15px;
+}
+
+/* Version Selector */
+.version-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.version-btn {
+    font-family: 'Crang', 'Orbitron', sans-serif;
+    background: var(--bg-card);
+    border: 2px solid var(--accent-blue);
+    color: var(--text-secondary);
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.version-btn:hover {
+    background: rgba(74, 158, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.version-btn.active {
+    background: var(--accent-blue);
+    color: var(--bg-primary);
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.5);
 }
 
 /* Main content */

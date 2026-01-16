@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOOT JACKAL, LOOT! - Leaderboard</title>
+    <title>LOOT JACKAL, LOOT! Leaderboard</title>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
@@ -12,25 +12,25 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="revisit-after" content="1 days">
-    <link rel="canonical" href="https://fededc512.github.io/leaderboard-web/">
+    <link rel="canonical" href="https://loot-jackal-loot.github.io/leaderboard/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fededc512.github.io/leaderboard-web/">
-    <meta property="og:title" content="LOOT JACKAL, LOOT! - Leaderboard">
+    <meta property="og:url" content="https://loot-jackal-loot.github.io/leaderboard/">
+    <meta property="og:title" content="LOOT JACKAL, LOOT! Leaderboard">
     <meta property="og:description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
-    <meta property="og:image" content="https://fededc512.github.io/jackal-leaderboard-web/logo_v2.png">
-    <meta property="og:image:alt" content="LOOT JACKAL, LOOT! Logo">
+    <meta property="og:image" content="https://img.itch.zone/aW1nLzI0NTc0MDg3LnBuZw==/original/Df1g16.png">
+    <meta property="og:image:alt" content="LOOT JACKAL, LOOT! Social media image">
     <meta property="og:site_name" content="LOOT JACKAL, LOOT!">
     <meta property="og:locale" content="en_US">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://fededc512.github.io/leaderboard-web/">
-    <meta name="twitter:title" content="LOOT JACKAL, LOOT! - Leaderboard">
+    <meta name="twitter:url" content="https://loot-jackal-loot.github.io/leaderboard/">
+    <meta name="twitter:title" content="LOOT JACKAL, LOOT! Leaderboard">
     <meta name="twitter:description" content="Real-time Leaderboard for LOOT JACKAL, LOOT!">
-    <meta name="twitter:image" content="https://fededc512.github.io/jackal-leaderboard-web/logo_v2.png">
-    <meta name="twitter:image:alt" content="LOOT JACKAL, LOOT! Logo">
+    <meta name="twitter:image" content="https://img.itch.zone/aW1nLzI0NTc0MDg3LnBuZw==/original/Df1g16.png">
+    <meta name="twitter:image:alt" content="LOOT JACKAL, LOOT! Social media image">
     
     <!-- Additional SEO -->
     <meta name="theme-color" content="#1a1a35">
@@ -41,7 +41,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="logo_v2.png">
+    <link rel="apple-touch-icon" href="https://img.itch.zone/aW1nLzI0NTc0MDg3LnBuZw==/original/Df1g16.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +55,35 @@
             <h1>Leaderboard</h1>
             <p class="subtitle"><a href="https://frobby.itch.io/loot-jackal-loot" target="_blank">LOOT JACKAL, LOOT!</a></p>
         </header>
+        
+        <div class="countdown-container">
+            <p class="countdown-label">Time remaining</p>
+            <div id="countdown" class="countdown">
+                <div id="countdown-days-container" class="countdown-item">
+                    <span id="countdown-days">00</span>
+                    <span class="countdown-unit">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="countdown-hours">00</span>
+                    <span class="countdown-unit">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="countdown-minutes">00</span>
+                    <span class="countdown-unit">Min</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="countdown-seconds">00</span>
+                    <span class="countdown-unit">Sec</span>
+                </div>
+            </div>
+            <p id="countdown-expired" class="countdown-expired hidden">⏰ Time's up!</p>
+        </div>
+
+        <div class="version-selector">
+            <button class="version-btn active" data-version="current">Ostello Bello</button>
+            <button class="version-btn hidden" data-version="v2">Ostello Bello</button>
+            <button class="version-btn" data-version="v1">Release</button>
+        </div>
         
         <main>
             <div id="loading" class="loading">
@@ -79,7 +108,7 @@
                 <span class="status-dot"></span>
                 <span id="status-text">Live</span>
             </div>
-            <p class="last-update">Last update: <span id="last-update-time">--:--:--</span></p>
+            <p class="last-update"><span id="last-update-label">Last update</span>: <span id="last-update-time">--:--:--</span></p>
         </div>
         
         <footer>
