@@ -237,46 +237,47 @@ function updateLeaderboard() {
         default:
             dataToDisplay = leaderboardData;
     }
-    
+
     // Convert data to array
     const entries = [];
-    
+
     for (const key in dataToDisplay) {
         const item = dataToDisplay[key];
-        
+
         // Check if it's an object with score
         if (item && typeof item === 'object' && 'score' in item) {
             entries.push({
                 name: key,
-                score: parseInt(item.score) || 0
+                score: parseInt(item.score) || 0,
+                time: parseFloat(item.time).toFixed(2) || null // Add time in seconds
             });
         }
     }
-    
+
     // Sort by score descending
     entries.sort((a, b) => b.score - a.score);
-    
+
     // Generate HTML
     leaderboardListEl.innerHTML = '';
-    
+
     if (entries.length === 0) {
         leaderboardListEl.innerHTML = '<li class="leaderboard-entry"><span class="player-name" style="text-align: center; width: 100%;">No scores registered</span></li>';
         return;
     }
-    
+
     entries.forEach((entry, index) => {
         const rank = index + 1;
         const displayName = entry.name;
         const isTop10 = rank <= 10;
-        
+
         const li = document.createElement('li');
         li.className = `leaderboard-entry${isTop10 ? ` top-10 rank-${rank}` : ''}`;
         li.innerHTML = `
             <span class="rank">${getRankDisplay(rank)}</span>
             <span class="player-name">${escapeHtml(displayName)}</span>
-            <span class="score">${entry.score.toLocaleString()}</span>
+            <span class="score">${entry.score.toLocaleString()}${entry.time && currentVersion !== 'v1' ? `<span class='time'> ${entry.time}s</span>` : ''}</span>
         `;
-        
+
         leaderboardListEl.appendChild(li);
     });
 }
