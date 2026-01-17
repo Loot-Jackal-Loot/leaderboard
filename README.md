@@ -4,7 +4,6 @@ Web page that displays the "Loot Jackal, Loot!" game leaderboard in real-time, c
 
 🌐 [View Live Leaderboard](https://fededc512.github.io/jackal-leaderboard-web/)
 
-
 ## ✨ Features
 
 - 🏆 **Full leaderboard** with all registered scores
@@ -12,8 +11,8 @@ Web page that displays the "Loot Jackal, Loot!" game leaderboard in real-time, c
 - 🔄 **Real-time updates** via Firebase Realtime Database
 - 🟢 **Connection status**: Live / Reconnecting / Disconnected
 - ⏰ **Last update timestamp**
+- ⏱️ **Time shown next to scores**
 - 📱 **Responsive design** with animated space background
-
 
 ## 🎮 Coherence with the Godot Game
 
@@ -27,6 +26,6 @@ The main differences are intentional adaptations for the web context. While the 
 ## 📋 TODO
 
 - [x] Replace site icon with a proper favicon
-- [ ] Add a separate leaderboard section for the release version
-- [ ] Display time alongside score
+- [x] Add a separate leaderboard section for the release version
+- [x] Display time alongside score
 - [ ] Add the game logo
