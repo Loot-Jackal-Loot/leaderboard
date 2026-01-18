@@ -254,8 +254,15 @@ function updateLeaderboard() {
         }
     }
 
-    // Sort by score descending
-    entries.sort((a, b) => b.score - a.score);
+    // Sort by score descending, then by time descending if scores are equal
+    entries.sort((a, b) => {
+        if (b.score !== a.score) {
+            return b.score - a.score;
+        }
+        // Se score uguali, ordina per tempo decrescente (maggiore prima)
+        // entry.time è stringa, quindi va convertita a float
+        return parseFloat(b.time) - parseFloat(a.time);
+    });
 
     // Generate HTML
     leaderboardListEl.innerHTML = '';
